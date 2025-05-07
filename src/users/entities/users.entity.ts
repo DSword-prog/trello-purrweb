@@ -2,26 +2,28 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Gender } from '../../common/enums/gender.enum';
+import { ColumnEntity } from '../../columns/entities/columns.entity';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('text')
+  @Column('text', { nullable: false })
   email: string;
 
-  @Column('text')
+  @Column('text', { nullable: false })
   password_hash: string;
 
-  @Column('text')
+  @Column('text', { nullable: false })
   name: string;
 
-  @Column('text')
+  @Column('text', { nullable: false })
   surname: string;
 
   @Column({
@@ -42,4 +44,7 @@ export class User {
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
   updated_at: Date;
+
+  @OneToMany(() => ColumnEntity, (column) => column.user)
+  columns: ColumnEntity[];
 }
