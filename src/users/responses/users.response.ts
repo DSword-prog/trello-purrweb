@@ -1,6 +1,6 @@
 import { Gender } from '../../common/enums/gender.enum';
 
-export class UserResponse {
+export class UsersResponse {
   readonly id: string;
   readonly email: string;
   readonly name: string;

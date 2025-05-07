@@ -14,7 +14,7 @@ import { UserService } from '../services/users.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { LoginDto } from '../dto/login.dto';
-import { UserResponse } from '../responses/user.response';
+import { UsersResponse } from '../responses/users.response';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
@@ -30,7 +30,7 @@ export class UsersController {
   @Get(':id')
   async getUserById(
     @Param('id', ParseUUIDPipe) id: string,
-  ): Promise<UserResponse> {
+  ): Promise<UsersResponse> {
     const user = await this.userService.findOne(id);
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);

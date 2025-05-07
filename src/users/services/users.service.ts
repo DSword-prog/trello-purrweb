@@ -11,7 +11,7 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import * as bcrypt from 'bcryptjs';
 import { LoginDto } from '../dto/login.dto';
-import { UserResponse } from '../responses/user.response';
+import { UsersResponse } from '../responses/users.response';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
@@ -38,11 +38,11 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
-  async findAll(): Promise<User[]> {
+  async findAll(): Promise<UsersResponse[]> {
     return this.userRepository.find();
   }
 
-  async findOne(id: string): Promise<UserResponse> {
+  async findOne(id: string): Promise<UsersResponse> {
     return this.userRepository.findOne({
       where: { id },
     });
