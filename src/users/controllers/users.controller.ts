@@ -16,16 +16,21 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 import { LoginDto } from '../dto/login.dto';
 import { UsersResponse } from '../responses/users.response';
 import { AuthGuard } from '@nestjs/passport';
+import { ColumnsService } from '../../columns/services/columns.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly columnService: ColumnsService,
+  ) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
   async findAll() {
     return this.userService.findAll();
   }
+
   @UseGuards(AuthGuard('jwt'))
   @Get(':id')
   async getUserById(
@@ -61,5 +66,10 @@ export class UsersController {
   @Post('login')
   async login(@Body() dto: LoginDto) {
     return this.userService.login(dto);
+  }
+
+  @Get(':id/columns')
+  getUserColumns(@Param('id') id: string) {
+    return this.columnService.getColumnsByUserId(id);
   }
 }
