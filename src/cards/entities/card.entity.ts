@@ -2,37 +2,28 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Gender } from '../../common/enums/gender.enum';
 import { ColumnEntity } from '../../columns/entities/columns.entity';
 import { Comment } from '../../comments/entities/comment.entity';
 
 @Entity()
-export class User {
+export class Card {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column('text', { nullable: false })
-  email: string;
+  title: string;
 
-  @Column('text', { nullable: false })
-  password_hash: string;
+  @Column('text')
+  description: string;
 
-  @Column('text', { nullable: false })
-  name: string;
-
-  @Column('text', { nullable: false })
-  surname: string;
-
-  @Column({
-    type: 'enum',
-    enum: Gender,
-    default: Gender.NONE,
-  })
-  gender: Gender;
+  @Column({ type: 'boolean', default: false })
+  is_archived: boolean;
 
   @CreateDateColumn({
     type: 'timestamp',
@@ -46,9 +37,13 @@ export class User {
   })
   updated_at: Date;
 
-  @OneToMany(() => ColumnEntity, (column) => column.user)
-  columns: ColumnEntity[];
+  @ManyToOne(() => ColumnEntity, (column) => column.cards, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'column_id' })
+  column: ColumnEntity;
 
-  @OneToMany(() => Comment, (comment) => comment.user)
+  @OneToMany(() => Comment, (comment) => comment.card)
   comments: Comment[];
 }

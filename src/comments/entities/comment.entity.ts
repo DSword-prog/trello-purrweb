@@ -1,26 +1,22 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
+  Entity,
   JoinColumn,
-  OneToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
-import { User } from '../../users/entities/users.entity';
 import { Card } from '../../cards/entities/card.entity';
+import { User } from '../../users/entities/users.entity';
 
 @Entity()
-export class ColumnEntity {
+export class Comment {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column('text', { nullable: false })
-  title: string;
-
-  @Column({ type: 'boolean', default: false })
-  is_archived: boolean;
+  text: string;
 
   @CreateDateColumn({
     type: 'timestamp',
@@ -34,13 +30,17 @@ export class ColumnEntity {
   })
   updated_at: Date;
 
-  @ManyToOne(() => User, (user) => user.columns, {
+  @ManyToOne(() => Card, (card) => card.comments, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'card_id' })
+  card: Card;
+
+  @ManyToOne(() => User, (user) => user.comments, {
     nullable: false,
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'user_id' })
   user: User;
-
-  @OneToMany(() => Card, (card) => card.column)
-  cards: Card[];
 }
