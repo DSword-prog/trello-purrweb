@@ -14,6 +14,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { CreateColumnDto } from '../dto/create-column.dto';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { UpdateColumnDto } from '../dto/update-column.dto';
+import { ColumnOwnerGuard } from '../../common/guards/column-owner.guard';
 
 @Controller('columns')
 export class ColumnsController {
@@ -37,7 +38,7 @@ export class ColumnsController {
     return this.columnService.findOne(id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), ColumnOwnerGuard)
   @Patch(':id')
   async update(
     @Param('id', ParseUUIDPipe) id: string,
@@ -46,7 +47,7 @@ export class ColumnsController {
     return this.columnService.update(id, dto);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), ColumnOwnerGuard)
   @Delete(':id')
   async delete(@Param('id', ParseUUIDPipe) id: string) {
     return this.columnService.delete(id);
