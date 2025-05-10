@@ -16,29 +16,27 @@ import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { UpdateColumnDto } from '../dto/update-column.dto';
 import { ColumnOwnerGuard } from '../../common/guards/column-owner.guard';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('columns')
 export class ColumnsController {
   constructor(private readonly columnService: ColumnsService) {}
 
-  @UseGuards(AuthGuard('jwt'))
   @Post()
   async create(@Body() dto: CreateColumnDto, @CurrentUser() user) {
     return this.columnService.create(dto, user.id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Get()
   async findAll() {
     return this.columnService.findAll();
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.columnService.findOne(id);
   }
 
-  @UseGuards(AuthGuard('jwt'), ColumnOwnerGuard)
+  @UseGuards(ColumnOwnerGuard)
   @Patch(':id')
   async update(
     @Param('id', ParseUUIDPipe) id: string,
@@ -47,7 +45,7 @@ export class ColumnsController {
     return this.columnService.update(id, dto);
   }
 
-  @UseGuards(AuthGuard('jwt'), ColumnOwnerGuard)
+  @UseGuards(ColumnOwnerGuard)
   @Delete(':id')
   async delete(@Param('id', ParseUUIDPipe) id: string) {
     return this.columnService.delete(id);
