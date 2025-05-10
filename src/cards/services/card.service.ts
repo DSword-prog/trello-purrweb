@@ -38,4 +38,11 @@ export class CardService {
     if (result.affected === 0)
       throw new NotFoundException(`Card with ID ${id} not found`);
   }
+
+  async findWithColumnAndUser(id: string) {
+    return this.cardRepository.findOne({
+      where: { id },
+      relations: ['column', 'column.user'],
+    });
+  }
 }
