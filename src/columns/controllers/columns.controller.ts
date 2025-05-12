@@ -15,6 +15,7 @@ import { CreateColumnDto } from '../dto/create-column.dto';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { UpdateColumnDto } from '../dto/update-column.dto';
 import { ColumnOwnerGuard } from '../../common/guards/column-owner.guard';
+import { User } from '../../users/entities/users.entity';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('columns')
@@ -22,7 +23,7 @@ export class ColumnsController {
   constructor(private readonly columnService: ColumnsService) {}
 
   @Post()
-  async create(@Body() dto: CreateColumnDto, @CurrentUser() user) {
+  async create(@Body() dto: CreateColumnDto, @CurrentUser() user: User) {
     return this.columnService.create(dto, user.id);
   }
 
