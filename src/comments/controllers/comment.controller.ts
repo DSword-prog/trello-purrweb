@@ -15,6 +15,7 @@ import { CreateCommentDto } from '../dto/create-comment.dto';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { User } from '../../users/entities/users.entity';
 import { UpdateCommentDto } from '../dto/update-comment.dto';
+import { CommentOwnerGuard } from 'src/common/guards/comment-owner.guard';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('comment')
@@ -36,6 +37,7 @@ export class CommentController {
     return this.commentService.create(dto, user.id);
   }
 
+  @UseGuards(CommentOwnerGuard)
   @Patch(':id')
   async update(
     @Param('id', ParseUUIDPipe) id: string,
@@ -44,6 +46,7 @@ export class CommentController {
     return this.commentService.update(id, dto);
   }
 
+  @UseGuards(CommentOwnerGuard)
   @Delete(':id')
   async delete(@Param('id', ParseUUIDPipe) id) {
     return this.commentService.delete(id);
