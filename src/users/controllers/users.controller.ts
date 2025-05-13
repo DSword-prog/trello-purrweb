@@ -30,6 +30,7 @@ import {
 } from '@nestjs/swagger';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { User } from '../entities/users.entity';
+import { ColumnEntity } from '../../columns/entities/columns.entity';
 
 @Controller('users')
 @ApiTags('users')
@@ -100,7 +101,10 @@ export class UsersController {
   @ApiBearerAuth()
   @Get(':id/columns')
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ description: 'User columns returned successfully' })
+  @ApiOkResponse({
+    description: 'User columns returned successfully',
+    type: [ColumnEntity],
+  })
   getUserColumns(@Param('id', ParseUUIDPipe) id: string) {
     return this.columnService.getColumnsByUserId(id);
   }

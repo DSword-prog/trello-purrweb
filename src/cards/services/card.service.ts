@@ -47,4 +47,8 @@ export class CardService {
       relations: ['column', 'column.user'],
     });
   }
+
+  async getCardsByColumnId(columnId: string): Promise<Card[]> {
+    return this.cardRepository.find({ where: { column: { id: columnId } } });
+  }
 }
