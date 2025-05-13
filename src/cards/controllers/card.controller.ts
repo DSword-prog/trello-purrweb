@@ -23,12 +23,14 @@ import {
   ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { CardResponse } from '../responses/card.response';
 import { UpdateCardDto } from '../dto/update-card.dto';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('cards')
+@ApiTags('cards')
 export class CardController {
   constructor(private readonly cardService: CardService) {}
 

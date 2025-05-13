@@ -25,6 +25,7 @@ import {
   ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { ColumnsResponse } from '../responses/columns.response';
 import { CardService } from '../../cards/services/card.service';
@@ -32,6 +33,7 @@ import { CardResponse } from '../../cards/responses/card.response';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('columns')
+@ApiTags('columns')
 export class ColumnsController {
   constructor(
     private readonly columnService: ColumnsService,
