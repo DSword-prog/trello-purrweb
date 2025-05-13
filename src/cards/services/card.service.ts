@@ -27,7 +27,10 @@ export class CardService {
   }
 
   async create(dto: CreateCardDto) {
-    const card = this.cardRepository.create(dto);
+    const card = this.cardRepository.create({
+      ...dto,
+      column: { id: dto.column_id }, // ← ключевой момент
+    });
     return this.cardRepository.save(card);
   }
 

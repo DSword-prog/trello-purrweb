@@ -20,7 +20,10 @@ export class CommentService {
   }
 
   async findOne(id: string): Promise<CommentResponse> {
-    const comment = await this.commentRepository.findOne({ where: { id } });
+    const comment = await this.commentRepository.findOne({
+      where: { id },
+      relations: ['user', 'column'],
+    });
     if (!comment)
       throw new NotFoundException(`Comment with ID ${id} not found`);
     return comment;
@@ -30,7 +33,8 @@ export class CommentService {
     const user = await this.userService.findOne(userId);
     const comment = this.commentRepository.create({
       ...dto,
-      user,
+      user: { id: user.id, name: user.name, surname: user.surname },
+      card: { id: dto.card_id },
     });
     return this.commentRepository.save(comment);
   }
