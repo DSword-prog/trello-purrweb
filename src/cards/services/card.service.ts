@@ -18,7 +18,9 @@ export class CardService {
   }
 
   async findOne(id: string): Promise<CardResponse> {
-    return this.cardRepository.findOne({ where: { id } });
+    const card = await this.cardRepository.findOne({ where: { id } });
+    if (!card) throw new NotFoundException(`Card with ID ${id} not found`);
+    return card;
   }
 
   async create(dto: CreateCardDto) {

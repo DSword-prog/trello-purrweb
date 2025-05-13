@@ -29,9 +29,11 @@ export class ColumnsService {
   }
 
   async findOne(id: string): Promise<ColumnsResponse> {
-    return this.columnRepository.findOne({
+    const column = await this.columnRepository.findOne({
       where: { id },
     });
+    if (!column) throw new NotFoundException(`Column with ID ${id} not found`);
+    return column;
   }
 
   async update(id: string, dto: UpdateColumnDto) {

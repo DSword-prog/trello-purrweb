@@ -48,7 +48,7 @@ export class CommentController {
 
   @UseGuards(CommentOwnerGuard)
   @Delete(':id')
-  async delete(@Param('id', ParseUUIDPipe) id) {
+  async delete(@Param('id', ParseUUIDPipe) id: string) {
     return this.commentService.delete(id);
   }
 }
