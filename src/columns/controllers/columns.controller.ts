@@ -75,7 +75,7 @@ export class ColumnsController {
     return this.cardService.getCardsByColumnId(id);
   }
 
-  @UseGuards(AuthGuard('jwt'), ColumnOwnerGuard)
+  @UseGuards(ColumnOwnerGuard)
   @ApiBearerAuth()
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
@@ -90,7 +90,7 @@ export class ColumnsController {
     return this.columnService.update(id, dto);
   }
 
-  @UseGuards(AuthGuard('jwt'), ColumnOwnerGuard)
+  @UseGuards(ColumnOwnerGuard)
   @ApiBearerAuth()
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
