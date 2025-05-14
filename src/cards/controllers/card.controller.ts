@@ -23,6 +23,7 @@ import {
   ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
+  ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
 import { CardResponse } from '../responses/card.response';
@@ -38,6 +39,7 @@ export class CardController {
   @Get()
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ type: [CardResponse] })
+  @ApiOperation({ summary: 'Get all cards' })
   async findAll() {
     return this.cardService.findAll();
   }
@@ -47,6 +49,7 @@ export class CardController {
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ type: CardResponse })
   @ApiNotFoundResponse({ description: 'Card not found' })
+  @ApiOperation({ summary: 'Get card by ID' })
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.cardService.findOne(id);
   }
@@ -56,6 +59,7 @@ export class CardController {
   @HttpCode(HttpStatus.CREATED)
   @ApiBody({ description: 'Create card data', type: CreateCardDto })
   @ApiCreatedResponse({ type: CardResponse })
+  @ApiOperation({ summary: 'Create card' })
   async create(@Body() dto: CreateCardDto) {
     return this.cardService.create(dto);
   }
@@ -68,6 +72,7 @@ export class CardController {
   @ApiOkResponse({ type: CardResponse })
   @ApiNotFoundResponse({ description: 'Card not found' })
   @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiOperation({ summary: 'Update card' })
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdateColumnDto,
@@ -82,6 +87,7 @@ export class CardController {
   @ApiOkResponse({ description: 'Card deleted successfully' })
   @ApiNotFoundResponse({ description: 'Card not found' })
   @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiOperation({ summary: 'Delete card by ID' })
   async delete(@Param('id', ParseUUIDPipe) id: string) {
     return this.cardService.delete(id);
   }

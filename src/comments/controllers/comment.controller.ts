@@ -25,6 +25,7 @@ import {
   ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
+  ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
 import { CommentResponse } from '../responses/comment.response';
@@ -39,6 +40,7 @@ export class CommentController {
   @Get()
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ type: [CommentResponse] })
+  @ApiOperation({ summary: 'Get all comments' })
   async findAll() {
     return this.commentService.findAll();
   }
@@ -48,6 +50,7 @@ export class CommentController {
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ type: CommentResponse })
   @ApiNotFoundResponse({ description: 'Comment not found' })
+  @ApiOperation({ summary: 'Get comment by id' })
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.commentService.findOne(id);
   }
@@ -57,6 +60,7 @@ export class CommentController {
   @HttpCode(HttpStatus.CREATED)
   @ApiBody({ description: 'Create comment data', type: CreateCommentDto })
   @ApiCreatedResponse({ type: CommentResponse })
+  @ApiOperation({ summary: 'Create comment' })
   async create(@Body() dto: CreateCommentDto, @CurrentUser() user: User) {
     return this.commentService.create(dto, user.id);
   }
@@ -69,6 +73,7 @@ export class CommentController {
   @ApiOkResponse({ type: CommentResponse })
   @ApiNotFoundResponse({ description: 'Comment not found' })
   @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiOperation({ summary: 'Update comment' })
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdateCommentDto,
@@ -83,6 +88,7 @@ export class CommentController {
   @ApiOkResponse({ description: 'Comment deleted successfully' })
   @ApiNotFoundResponse({ description: 'Comment not found' })
   @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiOperation({ summary: 'Delete comment' })
   async delete(@Param('id', ParseUUIDPipe) id: string) {
     return this.commentService.delete(id);
   }

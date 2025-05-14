@@ -25,6 +25,7 @@ import {
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
+  ApiOperation,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -45,6 +46,7 @@ export class UsersController {
   @Get()
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ type: [UsersResponse] })
+  @ApiOperation({ summary: 'Get all users' })
   async findAll() {
     return this.userService.findAll();
   }
@@ -54,6 +56,7 @@ export class UsersController {
   @Get('me')
   @ApiOkResponse({ type: UsersResponse })
   @ApiNotFoundResponse({ description: 'User not found' })
+  @ApiOperation({ summary: 'Get current user' })
   async getMe(@CurrentUser() user: User): Promise<UsersResponse> {
     return this.userService.findOne(user.id);
   }
@@ -63,6 +66,7 @@ export class UsersController {
   @ApiBody({ description: 'Create user data', type: CreateUserDto })
   @ApiCreatedResponse({ type: UsersResponse })
   @ApiConflictResponse({ description: 'Email is already registered' })
+  @ApiOperation({ summary: 'Create user' })
   async create(@Body() dto: CreateUserDto) {
     return this.userService.create(dto);
   }
@@ -74,6 +78,7 @@ export class UsersController {
   @ApiBody({ description: 'Update user data', type: UpdateUserDto })
   @ApiOkResponse({ type: UsersResponse })
   @ApiNotFoundResponse({ description: 'User not found' })
+  @ApiOperation({ summary: 'Update user' })
   async update(@CurrentUser() user: User, @Body() dto: UpdateUserDto) {
     return this.userService.update(user.id, dto);
   }
@@ -84,6 +89,7 @@ export class UsersController {
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ description: 'User deleted successfully' })
   @ApiNotFoundResponse({ description: 'User not found' })
+  @ApiOperation({ summary: 'Delete user' })
   async delete(@CurrentUser() user: User) {
     return this.userService.delete(user.id);
   }
@@ -93,6 +99,7 @@ export class UsersController {
   @ApiBody({ description: 'Login data', type: LoginDto })
   @ApiOkResponse({ description: 'JWT token returned successfully' })
   @ApiUnauthorizedResponse({ description: 'Wrong email or password' })
+  @ApiOperation({ summary: 'Login user' })
   async login(@Body() dto: LoginDto) {
     return this.userService.login(dto);
   }
@@ -105,6 +112,7 @@ export class UsersController {
     description: 'User columns returned successfully',
     type: [ColumnEntity],
   })
+  @ApiOperation({ summary: 'Get user columns' })
   getUserColumns(@Param('id', ParseUUIDPipe) id: string) {
     return this.columnService.getColumnsByUserId(id);
   }
